@@ -17,6 +17,6 @@ export function connectToCluster(collectionName: string) {
     }
 }
 
-export const collectionUser = connectToCluster('user')
+export const collectionUser = connectToCluster('users')
 export const collectionCategory = connectToCluster('category')
 export const collectionQuestions = connectToCluster('questions')

@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 // import { connectToDatabase } from "../database/mongoose";
 import { handleError } from "../utils";
 import { collectionUser } from "../database/mongodb";
-import { ObjectId } from "mongodb";
 
 // CREATE
 export async function createUser(user: CreateUserParams) {
