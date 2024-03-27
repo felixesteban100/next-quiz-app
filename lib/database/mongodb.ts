@@ -7,7 +7,7 @@ export function connectToCluster(collectionName: string) {
         mongoClient = new MongoClient(process.env.MONGO_URL!);
         mongoClient.connect();
 
-        const db = mongoClient.db('test');
+        const db = mongoClient.db('QUESTIONS');
         const collection = db.collection(collectionName);
 
         return collection
@@ -18,5 +18,5 @@ export function connectToCluster(collectionName: string) {
 }
 
 export const collectionUser = connectToCluster('users')
-export const collectionCategory = connectToCluster('category')
+export const collectionCategory = connectToCluster('categories')
 export const collectionQuestions = connectToCluster('questions')
