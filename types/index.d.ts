@@ -16,3 +16,49 @@ declare type UpdateUserParams = {
     username: string;
     photo: string;
 };
+
+
+declare type Category = {
+    name: string;
+    id: number;
+    createdBy: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+declare type Question = {
+    createdBy: string;
+    createdAt: Date;
+    updatedAt: Date;
+    question: string;
+    type: string;
+    correct_answer: string;
+    incorrect_answers: string[];
+    category: string;
+    difficulty: string;
+    image_url: string;
+}
+
+declare type QueryOptions = {
+    category?: string;
+    type?: string;
+    difficulty?: string;
+}
+
+declare type QuestionProp = {
+    allAnswers: string[];
+    answerSelected: string;
+    question: string;
+    image_url: string;
+    type: string;
+    correct_answer: string;
+    category: string;
+    difficulty: string;
+    createdBy: string;
+    createdAt: Date;
+    updatedAt: Date;
+    incorrect_answers: string[];
+    _id: ObjectId;
+}
+
+declare type FormAction = 'create' | 'update' | 'delete'

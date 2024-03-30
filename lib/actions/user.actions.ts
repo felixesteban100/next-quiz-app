@@ -17,7 +17,7 @@ export async function createUser(user: CreateUserParams) {
         return JSON.parse(JSON.stringify(newUser))
 
     } catch (error) {
-        handleError(error);
+        handleError(error, "user.actions createUser");
     }
 }
 
@@ -34,7 +34,7 @@ export async function getUserById(userId: string) {
         if (!user) throw new Error("User not found");
         return JSON.parse(JSON.stringify(user));
     } catch (error) {
-        handleError(error);
+        handleError(error, "user.actions getUserById");
     }
 }
 
@@ -51,7 +51,7 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
 
         return JSON.parse(JSON.stringify(updatedUser));
     } catch (error) {
-        handleError(error);
+        handleError(error, "user.actions updateUser");
     }
 }
 
@@ -74,6 +74,6 @@ export async function deleteUser(clerkId: string) {
 
         return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
     } catch (error) {
-        handleError(error);
+        handleError(error, "user.actions deleteUser");
     }
 }

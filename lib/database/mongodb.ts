@@ -1,6 +1,7 @@
-import { MongoClient } from "mongodb";
+import { User } from "@clerk/nextjs/server";
+import { MongoClient, Document } from "mongodb";
 
-export function connectToCluster(collectionName: string) {
+export function connectToCluster<Collection extends Document>(collectionName: string) {
     let mongoClient;
 
     try {
@@ -8,7 +9,7 @@ export function connectToCluster(collectionName: string) {
         mongoClient.connect();
 
         const db = mongoClient.db('QUESTIONS');
-        const collection = db.collection(collectionName);
+        const collection = db.collection<Collection>(collectionName);
 
         return collection
     } catch (error) {
@@ -17,6 +18,6 @@ export function connectToCluster(collectionName: string) {
     }
 }
 
-export const collectionUser = connectToCluster('users')
-export const collectionCategory = connectToCluster('categories')
-export const collectionQuestions = connectToCluster('questions')
+export const collectionUser = connectToCluster<User>('users')
+export const collectionCategory = connectToCluster<Category>('categories')
+export const collectionQuestions = connectToCluster<Question>('questions')
