@@ -51,8 +51,8 @@ export default function Navbar() {
                         <SignedIn>
                             <menu className="flex flex-col gap-10">
                                 {links.map((link) => (
-                                    <SheetClose asChild>
-                                        <Link key={link.href} href={link.href}>
+                                    <SheetClose key={link.href} asChild>
+                                        <Link href={link.href}>
                                             <Button variant={"link"} className="text-3xl">{link.title}</Button>
                                         </Link>
                                     </SheetClose>
@@ -62,8 +62,8 @@ export default function Navbar() {
                         <SignedOut>
                             <menu className="flex flex-col gap-10">
                                 {[links[0]].map((link) => (
-                                    <SheetClose asChild>
-                                        <Link key={link.href} href={link.href}>
+                                    <SheetClose key={link.href} asChild>
+                                        <Link href={link.href}>
                                             <Button variant={"link"} className="text-3xl">{link.title}</Button>
                                         </Link>
                                     </SheetClose>
