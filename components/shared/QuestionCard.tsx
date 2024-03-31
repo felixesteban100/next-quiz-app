@@ -10,7 +10,7 @@ type QuestionCardProps = {
     checkAnswers: boolean
 }
 
-export default async function QuestionCard({ question, checkAnswers, questionIndex }: QuestionCardProps) {
+export default function QuestionCard({ question, checkAnswers, questionIndex }: QuestionCardProps) {
     return (
         <div className="border-b flex flex-col gap-5 justify-center items-center p-5 pb-8">
             <p>{question.question}</p>
@@ -19,6 +19,7 @@ export default async function QuestionCard({ question, checkAnswers, questionInd
                     src={question.image_url}
                     // className="h-96 w-auto object-cover"
                     className="h-auto w-[40rem] object-cover"
+                    alt={question.question}
                 />
             }
             <RadioGroup id={`question-${questionIndex}`} /* onValueChange={(selected) => setAllQuestions((prev) => {
