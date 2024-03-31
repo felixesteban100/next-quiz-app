@@ -21,6 +21,7 @@ export default async function post_question() {
             difficulty={'easy'}
             image_url={undefined}
             FormAction="create"
+            selectedQuestionId=""
         />
     )
 }

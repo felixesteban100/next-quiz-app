@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 export default async function post_category() {
 
     return (
-        <FormCategory name={undefined} FormAction="create" />
+        <FormCategory name={undefined} FormAction="create" selectedCategoryId={""} />
     )
 }
