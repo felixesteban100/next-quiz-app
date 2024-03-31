@@ -6,14 +6,16 @@ import { revalidatePath } from "next/cache";
 // import { connectToDatabase } from "../database/mongoose";
 import { handleError } from "../utils";
 import { collectionUser } from "../database/mongodb";
+import { OptionalId } from "mongodb";
+import { User } from "@clerk/nextjs/server";
 
 // CREATE
-export async function createUser(user: CreateUserParams) {
+export async function createUser(user: CreateUserParams /* OptionalId<User> */) {
     try {
         // await connectToDatabase();
         // const newUser = await User.create(user);
 
-        const newUser = await collectionUser.insertOne(user)
+        const newUser = await collectionUser.insertOne({ ...user })
         return JSON.parse(JSON.stringify(newUser))
 
     } catch (error) {

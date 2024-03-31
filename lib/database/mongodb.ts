@@ -1,4 +1,3 @@
-import { User } from "@clerk/nextjs/server";
 import { MongoClient, Document } from "mongodb";
 
 export function connectToCluster<Collection extends Document>(collectionName: string) {
@@ -18,6 +17,6 @@ export function connectToCluster<Collection extends Document>(collectionName: st
     }
 }
 
-export const collectionUser = connectToCluster<User>('users')
+export const collectionUser = connectToCluster<CreateUserParams>('users')
 export const collectionCategory = connectToCluster<Category>('categories')
 export const collectionQuestions = connectToCluster<Question>('questions')
