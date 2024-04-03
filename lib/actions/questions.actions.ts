@@ -1,15 +1,17 @@
 "use server"
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore } from "next/cache";
 import { collectionQuestions } from "../database/mongodb";
 import { handleError } from "../utils";
 import { ObjectId } from "mongodb";
 
 export async function getQuestions(queryQuestions: QueryOptions, numberOfQuestions: number) {
     try {
-        const questions = await collectionQuestions.find({ ...queryQuestions }).limit(numberOfQuestions).sort({ rand: 1 }).toArray();
-        // revalidatePath("/questions")
-        return questions
+        unstable_noStore()
+
+        const questions = await collectionQuestions.find({ ...queryQuestions }).toArray();
+        revalidatePath("/questions")
+        return questions.sort(() => 0.5 - Math.random()).slice(0, numberOfQuestions)
 
     } catch (error) {
         handleError(error, 'questions.action getQuestions()')
@@ -52,13 +54,13 @@ export async function getQuestionByIdForUser(questionId: string | undefined, use
     }
 }
 
-export async function getAllQuestionsByUser(userId: string) {
+export async function getQuestionsByUser(userId: string) {
     try {
         const questions = await collectionQuestions.find({ createdBy: userId }).toArray()
         // if (!questions) throw new Error("Questions not found");
         return /* JSON.parse(JSON.stringify( */questions/* )) */;
     } catch (error) {
-        handleError(error, "getAllQuestions() questions.action");
+        handleError(error, "getQuestions() questions.action");
     }
 }
 

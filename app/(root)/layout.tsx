@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <main className="root">
+        <main>
             <Navbar />
             <div className="flex min-h-screen flex-col items-center justify-between p-10 w-full">
                 {children}

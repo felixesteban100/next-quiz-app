@@ -98,7 +98,7 @@ export default function SelectQuizForm({ categories }: SelectQuizFormProps) {
                         <FormItem className="w-full max-w-[800px]">
                             <FormLabel>numberOfQuestions</FormLabel>
                             <FormControl>
-                                <Input type="number" min={1} max={20} placeholder="How many questions" {...field} onChange={(value) => field.onChange(parseInt(value.target.value) < 20 ? parseInt(value.target.value) : field.value)} />
+                                <Input type="number" min={1} max={20} placeholder="How many questions" {...field} /* onChange={(value) => field.onChange(parseInt(value.target.value) < 20 ? parseInt(value.target.value) : field.value)} */ />
                             </FormControl>
                             <FormDescription>
                                 This is your public display name.

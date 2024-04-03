@@ -39,6 +39,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
@@ -80,6 +81,7 @@ type FormQuestionProps = {
 
 export default function FormQuestion({ categories, category, correct_answer, difficulty, image_url, incorrect_answers, question, type, selectedQuestionId, FormAction }: FormQuestionProps) {
     const { user } = useUser()
+    const router = useRouter()
 
     const defaultValues = {
         question: question,
@@ -120,6 +122,7 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                             description: JSON.stringify(questionCreated),
                             duration: 10000
                         })
+                        // form.reset(defaultValues)
                     }
                 } catch (error) {
                     console.log(error)
@@ -141,6 +144,7 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                                 description: JSON.stringify(questionUpdated),
                                 duration: 10000
                             })
+                            // form.reset(defaultValues)
                         } else {
                             toast.warning("Question trouble", {
                                 description: JSON.stringify(questionUpdated),
@@ -162,7 +166,6 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                 }
                 break;
 
-
             case 'delete':
                 try {
                     const questionDeleted = await deleteQuestion(selectedQuestionId)
@@ -172,6 +175,7 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                             description: JSON.stringify(questionDeleted),
                             duration: 10000
                         })
+                        // form.reset(defaultValues)
                     } else {
                         toast.warning("Question warning", {
                             description: JSON.stringify(questionDeleted),
@@ -418,7 +422,11 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <div className="flex items-center justify-center gap-5">
+                    <Button type="submit">Submit</Button>
+                    {/* <Button type="button" variant={"outline"} onClick={() => form.reset(defaultValues)}>Reset</Button> */}
+                    {/* <Button type="button" variant={"outline"} onClick={() => router.refresh()}>Reset</Button> */}
+                </div>
             </form>
         </Form>
     )

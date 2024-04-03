@@ -1,6 +1,6 @@
 
 import FormQuestion from "@/components/shared/FormQuestion";
-import { getAllCategories } from "@/lib/actions/categories.actions";
+import { getCategories } from "@/lib/actions/categories.actions";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function post_question() {
-    const categories: any = await getAllCategories()
+    const categories: any = await getCategories()
 
     return (
         <FormQuestion

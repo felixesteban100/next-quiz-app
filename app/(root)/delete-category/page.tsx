@@ -1,6 +1,6 @@
 import FormCategory from "@/components/shared/FormCategory";
 import SelectorCategory from "@/components/shared/SelectorCategory";
-import { getCategoryByIdForUser, getAllCategoriesByUser } from "@/lib/actions/categories.actions";
+import { getCategoryByIdForUser, getCategoriesByUser } from "@/lib/actions/categories.actions";
 import { currentUser } from '@clerk/nextjs';
 
 export default async function delete_category({
@@ -18,7 +18,7 @@ export default async function delete_category({
 
     const selectedCategoryInfo = await getCategoryByIdForUser(selectedCategoryId, user.id)
 
-    const allCategories = await getAllCategoriesByUser(user.id)
+    const allCategories = await getCategoriesByUser(user.id)
 
     const pageAction = "delete"
 

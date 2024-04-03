@@ -1,7 +1,7 @@
 import FormQuestion from "@/components/shared/FormQuestion";
 import SelectorQuestion from "@/components/shared/SelectorQuestion";
-import { getAllCategories } from "@/lib/actions/categories.actions";
-import { getQuestionByIdForUser, getAllQuestionsByUser } from "@/lib/actions/questions.actions";
+import { getCategories } from "@/lib/actions/categories.actions";
+import { getQuestionByIdForUser, getQuestionsByUser } from "@/lib/actions/questions.actions";
 import { currentUser } from '@clerk/nextjs';
 
 export default async function update_question({
@@ -20,9 +20,9 @@ export default async function update_question({
 
     const selectedQuestionInfo = await getQuestionByIdForUser(selectedQuestionId, user.id)
 
-    const categories = await getAllCategories()
+    const categories = await getCategories()
 
-    const allQuestions = await getAllQuestionsByUser(user.id)
+    const allQuestions = await getQuestionsByUser(user.id)
 
     const pageAction = 'update'
 

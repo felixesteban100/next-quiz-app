@@ -4,7 +4,6 @@ import QuestionCard from "./QuestionCard";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import Link from "next/link";
-import { navigate } from "@/lib/actions/app.actions";
 
 type QuestionsProps = {
     questions: QuestionProp[];
@@ -35,14 +34,8 @@ export default function Questions({ questions/* , checkAnswers */ }: QuestionsPr
             }
         })
 
-        // console.log(asnwers_0Arr[0].attributes[3].value) // data-set (isChecked)
-        // console.log(asnwers_0Arr[0].attributes[4].value) // value (answer value)
-
-        // navigate(`/quiz?checkAnswers=${true}&questions=${questionsWithAnswerSelected}`)
-
-        // setCheckAnwers(prev => !prev)
-        setAllQuestions(questionsWithAnswerSelected)
         setCheckAnwers(true)
+        setAllQuestions(questionsWithAnswerSelected)
     }
 
 

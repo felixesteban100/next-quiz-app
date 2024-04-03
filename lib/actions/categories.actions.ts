@@ -6,13 +6,13 @@ import { revalidatePath } from "next/cache";
 import { ObjectId } from "mongodb";
 
 
-export async function getAllCategories() {
+export async function getCategories() {
     try {
         const categories = await collectionCategory.find({}).toArray()
         // if (!categories) throw new Error("Categories not found");
         return /* JSON.parse(JSON.stringify( */categories/* )) */;
     } catch (error) {
-        handleError(error, "getAllCategories() categories.action");
+        handleError(error, "getCategories() categories.action");
     }
 }
 
@@ -55,13 +55,13 @@ export async function getCategoryByIdForUser(categoryId: string | undefined, use
     }
 }
 
-export async function getAllCategoriesByUser(userId: string) {
+export async function getCategoriesByUser(userId: string) {
     try {
         const categories = await collectionCategory.find({ createdBy: userId }).toArray()
         // if (!categories) throw new Error("Categories not found");
         return /* JSON.parse(JSON.stringify( */categories/* )) */;
     } catch (error) {
-        handleError(error, "getAllCategoriesByUser() categories.action");
+        handleError(error, "getCategoriesByUser() categories.action");
     }
 }
 

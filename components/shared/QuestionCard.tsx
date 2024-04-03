@@ -13,7 +13,8 @@ type QuestionCardProps = {
 export default function QuestionCard({ question, checkAnswers, questionIndex }: QuestionCardProps) {
     return (
         <div className="border-b flex flex-col gap-5 justify-center items-center p-5 pb-8">
-            <p>{question.question}</p>
+            <p><span>{questionIndex + 1}. </span>{question.question}</p>
+            <p><span>Difficulty: </span><span className={`${question.difficulty === "hard" ? "text-red-500" : question.difficulty === "medium" ? "text-yellow-500" : "text-green-500"} capitalize`}>{question.difficulty}</span></p>
             {question.image_url &&
                 <img
                     src={question.image_url}

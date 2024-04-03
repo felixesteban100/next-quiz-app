@@ -12,11 +12,9 @@ export default function ProvidersWrapperClientSide({
 }) {
 
     const resolvedTheme = useTheme();
-    // console.log(config.theme.extend.colors.primary.DEFAULT)
 
     const themeSelected = resolvedTheme.theme === "dark" || (resolvedTheme.theme === "system" && resolvedTheme.systemTheme !== "light") ? dark : undefined
 
-    // console.log(resolvedTheme.theme, /* === "system" && */ resolvedTheme.systemTheme /* !== "light" */)
 
     if (resolvedTheme === undefined) throw Error()
 
