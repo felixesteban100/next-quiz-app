@@ -26,6 +26,12 @@ declare type Category = {
     updatedAt: Date;
 }
 
+declare type TriviaCategories = Omit<Category, "createdAt" | "updatedAt" | "createdBy">[]
+
+declare type CategoryExternal = {
+    trivia_categories: TriviaQuestions;
+}
+
 declare type Question = {
     createdBy: string;
     createdAt: Date;
@@ -37,6 +43,13 @@ declare type Question = {
     category: string;
     difficulty: string;
     image_url: string;
+}
+
+declare type ResultQuestions = Omit<Question, "createdAt" | "updatedAt" | "createdBy">[]
+
+declare type QuestionExternal = {
+    response_code: number,
+    results: ResultQuestions
 }
 
 declare type QueryOptions = {

@@ -10,6 +10,7 @@ export default async function quiz({
     searchParams,
 }: {
     searchParams?: {
+        api?: string,
         numberOfQuestions?: string,
         category?: string,
         type?: string,
@@ -19,6 +20,7 @@ export default async function quiz({
     }
 }) {
 
+    const api = searchParams?.api ?? "3"
     const numberOfQuestions = parseInt(searchParams?.numberOfQuestions ?? "3")
     const category = searchParams?.category ?? "all"
     const type = searchParams?.type ?? "all"
@@ -28,8 +30,9 @@ export default async function quiz({
 
     return (
         <div>
-            <Suspense key={`${numberOfQuestions}-${category}-${type}-${difficulty}-${checkAnswers}`} fallback={<>Loading QuestionDisplay Component...</>}>
+            <Suspense key={`${api}-${numberOfQuestions}-${category}-${type}-${difficulty}-${checkAnswers}`} fallback={<>Loading QuestionDisplay Component...</>}>
                 <QuestionDisplay
+                    api={api}
                     category={category}
                     difficulty={difficulty}
                     type={type}

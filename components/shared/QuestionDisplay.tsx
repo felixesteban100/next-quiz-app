@@ -4,18 +4,37 @@ import Questions from "./Questions";
 
 
 type QuestionDisplayProps = {
+    api: string,
     numberOfQuestions: number,
     category: string,
     type: string,
     difficulty: string;
     checkAnswers: boolean;
-    // questionsFromUrlParams: QuestionProp[]
 }
 
-export default async function QuestionDisplay({ numberOfQuestions, category, type, difficulty, checkAnswers/* , questionsFromUrlParams */ }: QuestionDisplayProps) {
-
+export default async function QuestionDisplay({ api, numberOfQuestions, category, type, difficulty, checkAnswers }: QuestionDisplayProps) {
     const queryQuestions = await getQueryOptions(category, type, difficulty)
-    const questions = /* questionsFromUrlParams.length > 0 ? questionsFromUrlParams :  */await getQuestions(queryQuestions, numberOfQuestions)
+    const questionsNative = await getQuestions(queryQuestions, numberOfQuestions)
+
+    const questionsExternal: QuestionExternal = await fetch(constructLink()).then(res => res.json())
+
+    const questions = api === "native" ? questionsNative : questionsExternal.results
+
+    function constructLink(): string {
+        const queryParams: { [key: string]: string | number | undefined } = {
+            amount: numberOfQuestions,
+            category,
+            type,
+            difficulty
+        };
+
+        const queryParamsString = Object.entries(queryParams)
+            .filter(([_, value]) => (value !== undefined && value !== "all"))
+            .map(([key, value]) => `${key}=${value as string}`)
+            .join('&');
+
+        return `https://opentdb.com/api.php?${queryParamsString}`;
+    }
 
     if (!questions) return <>Error fething Questions</>
     if (questions && questions.length < 1) return <div>No questions found</div>
@@ -23,7 +42,6 @@ export default async function QuestionDisplay({ numberOfQuestions, category, typ
     const questionsWithAnswersRandomSorted = questions.map((c) => {
         return { ...c, allAnswers: [...c.incorrect_answers, c.correct_answer].sort(() => Math.random() - 0.5), answerSelected: "" }
     })
-
 
     return (
         <div>

@@ -37,10 +37,11 @@ const formSchema = z.object({
 })
 
 type SelectQuizFormProps = {
-    categories: WithId<Category>[] | undefined;
+    api: string,
+    categories: WithId<Category>[] | TriviaCategories | undefined;
 }
 
-export default function SelectQuizForm({ categories }: SelectQuizFormProps) {
+export default function SelectQuizForm({ api, categories }: SelectQuizFormProps) {
     const router = useRouter()
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -96,12 +97,12 @@ export default function SelectQuizForm({ categories }: SelectQuizFormProps) {
                     name="numberOfQuestions"
                     render={({ field }) => (
                         <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>numberOfQuestions</FormLabel>
+                            <FormLabel>How many question</FormLabel>
                             <FormControl>
                                 <Input type="number" min={1} max={20} placeholder="How many questions" {...field} /* onChange={(value) => field.onChange(parseInt(value.target.value) < 20 ? parseInt(value.target.value) : field.value)} */ />
                             </FormControl>
                             <FormDescription>
-                                This is your public display name.
+                                You can manage the number of questions
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -122,12 +123,12 @@ export default function SelectQuizForm({ categories }: SelectQuizFormProps) {
                                 <SelectContent>
                                     <SelectItem value='all'>All</SelectItem>
                                     {categories?.map((category: any) => (
-                                        <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
+                                        <SelectItem key={category.id} value={api === "native" ? category.name : category.id}>{category.name}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                             <FormDescription>
-                                You can manage the question type here
+                                You can manage the question category here
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -153,7 +154,7 @@ export default function SelectQuizForm({ categories }: SelectQuizFormProps) {
                                 </SelectContent>
                             </Select>
                             <FormDescription>
-                                You can manage the question type here
+                                You can manage the question difficulty here
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -161,7 +162,7 @@ export default function SelectQuizForm({ categories }: SelectQuizFormProps) {
                 />
 
                 {/* <Link href={`/quiz?category=${form.getValues().category}&type=${form.getValues().type}&numberOfQuestions=${form.getValues().numberOfQuestions}&difficulty=${form.getValues().difficulty}`}> */}
-                <Button onClick={() => router.replace(`/quiz?category=${form.getValues().category}&type=${form.getValues().type}&numberOfQuestions=${form.getValues().numberOfQuestions}&difficulty=${form.getValues().difficulty}`)} /* type="submit" */>Go to questions</Button>
+                <Button onClick={() => router.replace(`/quiz?api=${api}&category=${form.getValues().category}&type=${form.getValues().type}&numberOfQuestions=${form.getValues().numberOfQuestions}&difficulty=${form.getValues().difficulty}`)} /* type="submit" */>Go to questions</Button>
                 {/* </Link> */}
             </form>
         </Form>
