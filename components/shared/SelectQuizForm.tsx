@@ -60,32 +60,41 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
         })
     }
 
+    console.log(form.getValues('category'))
+
+    const classes = {
+        title: "text-3xl",
+        field: "text-3xl py-7",
+        options: "text-3xl",
+        description: "text-xl"
+    }
+
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col justify-center items-center w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 flex flex-col justify-center items-center w-full">
 
                 <FormField
                     control={form.control}
                     name="type"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Type of question</FormLabel>
+                        <FormItem className="w-full max-w-[800px] space-y-6">
+                            <FormLabel className={`${classes.title}`}>Type of question</FormLabel>
                             <Select onValueChange={(value) => {
                                 field.onChange(value)
                             }} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
+                                <FormControl className={`${classes.field}`} >
+                                    <SelectTrigger >
                                         <SelectValue placeholder="Select a type" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value={'all'}>All</SelectItem>
+                                    <SelectItem className={`${classes.options}`} value={'all'}>All</SelectItem>
                                     {QUESTION_TYPES.map((difficulties: any) => (
-                                        <SelectItem key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
+                                        <SelectItem className={`${classes.options}`} key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <FormDescription>
+                            <FormDescription className={`${classes.description}`}>
                                 You can manage the question type here
                             </FormDescription>
                             <FormMessage />
@@ -96,12 +105,12 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
                     control={form.control}
                     name="numberOfQuestions"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>How many question</FormLabel>
-                            <FormControl>
+                        <FormItem className="w-full max-w-[800px] space-y-6">
+                            <FormLabel className={`${classes.title}`}>How many question</FormLabel>
+                            <FormControl className={`${classes.field}`}>
                                 <Input type="number" min={1} max={20} placeholder="How many questions" {...field} /* onChange={(value) => field.onChange(parseInt(value.target.value) < 20 ? parseInt(value.target.value) : field.value)} */ />
                             </FormControl>
-                            <FormDescription>
+                            <FormDescription className={`${classes.description}`}>
                                 You can manage the number of questions
                             </FormDescription>
                             <FormMessage />
@@ -112,22 +121,22 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
                     control={form.control}
                     name="category"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Category</FormLabel>
+                        <FormItem className="w-full max-w-[800px] space-y-6">
+                            <FormLabel className={`${classes.title}`}>Category</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
+                                <FormControl className={`${classes.field}`}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select a type" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value='all'>All</SelectItem>
-                                    {categories?.map((category: any) => (
-                                        <SelectItem key={category.id} value={api === "native" ? category.name : category.id}>{category.name}</SelectItem>
+                                    <SelectItem className={`${classes.options}`} value='all'>All</SelectItem>
+                                    {categories?.map((category) => (
+                                        <SelectItem className={`${classes.options}`} key={category.id} value={api === "native" ? category.name : category.id.toString()}>{category.id} - {category.name}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <FormDescription>
+                            <FormDescription className={`${classes.description}`}>
                                 You can manage the question category here
                             </FormDescription>
                             <FormMessage />
@@ -138,22 +147,22 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
                     control={form.control}
                     name="difficulty"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Difficulty</FormLabel>
+                        <FormItem className="w-full max-w-[800px] space-y-6">
+                            <FormLabel className={`${classes.title}`}>Difficulty</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
+                                <FormControl className={`${classes.field}`} >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select a difficulty" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value="all">All</SelectItem>
+                                    <SelectItem className={`${classes.options}`} value="all">All</SelectItem>
                                     {QUESTION_DIFFICULTIES.map((difficulties: any) => (
-                                        <SelectItem key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
+                                        <SelectItem className={`${classes.options}`} key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <FormDescription>
+                            <FormDescription className={`${classes.description}`}>
                                 You can manage the question difficulty here
                             </FormDescription>
                             <FormMessage />
@@ -162,7 +171,7 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
                 />
 
                 {/* <Link href={`/quiz?category=${form.getValues().category}&type=${form.getValues().type}&numberOfQuestions=${form.getValues().numberOfQuestions}&difficulty=${form.getValues().difficulty}`}> */}
-                <Button onClick={() => router.replace(`/quiz?api=${api}&category=${form.getValues().category}&type=${form.getValues().type}&numberOfQuestions=${form.getValues().numberOfQuestions}&difficulty=${form.getValues().difficulty}`)} /* type="submit" */>Go to questions</Button>
+                <Button className="text-3xl p-10" onClick={() => router.replace(`/quiz?api=${api}&category=${form.getValues().category}&type=${form.getValues().type}&numberOfQuestions=${form.getValues().numberOfQuestions}&difficulty=${form.getValues().difficulty}`)} /* type="submit" */>Go to questions</Button>
                 {/* </Link> */}
             </form>
         </Form>

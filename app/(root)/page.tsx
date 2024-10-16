@@ -11,13 +11,13 @@ export const metadata: Metadata = {
 }
 
 export default async function Home({
-  searchParams,
+  searchParams: { api },
 }: {
-  searchParams?: {
+  searchParams: {
     api?: string,
   }
 }) {
-  const api = searchParams?.api ?? "native"
+  const apiValue = api ?? "native"
 
   return (
     <main className="w-full flex flex-col justify-center items-center gap-5">
@@ -28,20 +28,20 @@ export default async function Home({
         height={50}
         className="rounded-md"
       />
-      <div className="flex flex-col justify-center items-center">
-        <p>Choose the API source:</p>
+      <div className="flex flex-col justify-center items-center mb-5">
+        <p className="text-2xl">Choose the API source:</p>
         <div className="flex">
           <Link href={`/?api=native`}>
-            <Button variant={"link"} className={`${api === "native" ? "underline" : ""}`}>Native</Button>
+            <Button variant={"link"} className={`${apiValue === "native" ? "underline" : ""} text-3xl`}>Native</Button>
           </Link>
 
           <Link href={`/?api=external`}>
-            <Button variant={"link"} className={`${api === "external" ? "underline" : ""}`}>External</Button>
+            <Button variant={"link"} className={`${apiValue === "external" ? "underline" : ""} text-3xl`}>External</Button>
           </Link>
         </div>
       </div>
-      <Suspense fallback={<div className="text-center">Loading quiz form...</div>}>
-        <SelectQuiz api={api} />
+      <Suspense fallback={<div className="text-center text-3xl">Loading quiz form...</div>}>
+        <SelectQuiz api={apiValue} />
       </Suspense>
     </main>
   );

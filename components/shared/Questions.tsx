@@ -53,9 +53,9 @@ export default function Questions({ questions/* , checkAnswers */ }: QuestionsPr
                 ))}
             </div>
 
-            {checkAnswers === false && <Button onClick={CheckAnswers} variant={"link"}>Check answers</Button>/* <Button onClick={CheckAnswers}>Check answers</Button> */}
-            {checkAnswers === true && <Link href={'/'}><Button variant={"link"}>Go home</Button></Link>}
-            {checkAnswers === true && <div>
+            {checkAnswers === false && <Button onClick={CheckAnswers} variant={"link"} className="text-3xl">Check answers</Button>/* <Button onClick={CheckAnswers}>Check answers</Button> */}
+            {checkAnswers === true && <Link href={'/'}><Button variant={"link"} className="text-3xl">Go home</Button></Link>}
+            {checkAnswers === true && <div className="text-3xl">
                 Score = {/* questions */allQuestions.filter(c => c.answerSelected === c.correct_answer).length} / {/* questions */allQuestions.length}
             </div>}
         </section>
