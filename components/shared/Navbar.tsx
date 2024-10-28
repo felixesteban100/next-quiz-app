@@ -41,7 +41,7 @@ const links = [{
 
 export default function Navbar() {
     return (
-        <nav className="flex items-center justify-between py-5 px-10 bg-secondary/20 border-b">
+        <nav className="flex items-center justify-between py-5 px-10 bg-secondary/20 border-b ">
             <Sheet>
                 <SheetTrigger className={`h-[4rem]`}><FileQuestion className="h-full w-auto" /></SheetTrigger>
                 <SheetContent side="left">
@@ -71,8 +71,7 @@ export default function Navbar() {
             </Sheet>
 
 
-            <div className="flex justify-end items-center gap-5">
-
+            <div className="flex justify-end items-center gap-5 h-full">
                 <SignedIn>
                     <UserButton afterSignOutUrl="/sign-in" />
                 </SignedIn>

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select"
 import { redirect, usePathname } from "next/navigation"
 import { WithId } from "mongodb"
+import CustomFormItem from "./CustomFormItem"
 
 const FormSchema = z.object({
     question_id: z
@@ -49,6 +50,13 @@ export default function SelectorQuestion({ allQuestions, selectedQuestionInfo, p
         // redirect(`/update-question?selectedQuestionId${data.question_id}`)
     }
 
+    const classes = {
+        title: "text-3xl",
+        field: "text-3xl py-7",
+        options: "text-3xl",
+        description: "text-xl"
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col justify-center items-center w-full">
@@ -56,30 +64,26 @@ export default function SelectorQuestion({ allQuestions, selectedQuestionInfo, p
                     control={form.control}
                     name="question_id"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Questions</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={selectedQuestionInfo?._id.toString()}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={`Select a question to ${pageAction}`} />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {allQuestions?.map((question) => (
-                                        <SelectItem key={question._id.toString()} value={question._id.toString()}>{question.question}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                You can manage email addresses in your{" "}
-                                <Link href="/examples/forms">email settings</Link>.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Questions"
+                            description="You can manage the question type here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: `Select a question to ${pageAction}`,
+                                options: allQuestions ? allQuestions.map(c => ({
+                                    name: c.question,
+                                    value: c._id.toString(),
+                                    key: c._id.toString()
+                                })) : [],
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
                     )}
                 />
                 <Link href={`${pathname}?selectedQuestionId=${form.getValues().question_id}`}>
-                    <Button>
+                    <Button className="text-3xl p-10">
                         Select question
                     </Button>
                 </Link>

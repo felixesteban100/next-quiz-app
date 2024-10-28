@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { ControllerRenderProps, useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,6 +29,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import CustomFormItem from "./CustomFormItem"
 
 
 const formSchema = z.object({
@@ -153,10 +154,10 @@ export default function FormCategory({ name, FormAction, selectedCategoryId }: F
 
     if (FormAction === 'delete') {
         return (
-            <AlertDialog >
+            <AlertDialog>
                 <div className="flex justify-center items-center w-full">
                     <AlertDialogTrigger asChild>
-                        <Button variant="outline" /* className="max-w-[800px]" */>Delete Category</Button>
+                        <Button variant="destructive" className="text-3xl p-10" /* className="max-w-[800px]" */>Delete Category</Button>
                     </AlertDialogTrigger>
                 </div>
                 <AlertDialogContent>
@@ -187,19 +188,14 @@ export default function FormCategory({ name, FormAction, selectedCategoryId }: F
                     control={form.control}
                     name="name"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Category Name</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Type the category name here..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public display name.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Category Name"
+                            description="This is your public display name."
+                            formControlChildren={<Input placeholder="Type the category name here..." {...field} />}
+                        />
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button className="text-3xl p-10" type="submit">Submit</Button>
             </form>
         </Form>
     )

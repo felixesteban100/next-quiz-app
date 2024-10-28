@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select"
 import { WithId } from "mongodb"
 import { usePathname } from "next/navigation"
+import CustomFormItem from "./CustomFormItem"
 
 const FormSchema = z.object({
     category_id: z
@@ -49,6 +50,12 @@ export default function SelectorCategory({ allCategories, selectedCategoryInfo, 
         // redirect(`/update-question?selectedQuestionId${data.question_id}`)
     }
 
+    const classes = {
+        title: "text-3xl",
+        field: "text-3xl py-7",
+        options: "text-3xl",
+        description: "text-xl"
+    }
 
     return (
         <Form {...form}>
@@ -57,30 +64,27 @@ export default function SelectorCategory({ allCategories, selectedCategoryInfo, 
                     control={form.control}
                     name="category_id"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Questions</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={selectedCategoryInfo?._id.toString()}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={`Select a category to ${FormAction}`} />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {allCategories?.map((category) => (
-                                        <SelectItem key={category._id.toString()} value={category._id.toString()}>{category.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                You can manage email addresses in your{" "}
-                                <Link href="/examples/forms">email settings</Link>.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+
+                        <CustomFormItem
+                            label="Category"
+                            description="You can manage the question type here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: "Select a Category",
+                                options: allCategories ? allCategories.map(c => ({
+                                    name: c.name,
+                                    value: c._id.toString(),
+                                    key: c._id.toString()
+                                })) : [],
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
                     )}
                 />
                 <Link href={`${pathname}?selectedCategoryId=${form.getValues().category_id}`}>
-                    <Button>
+                    <Button className="text-3xl p-10">
                         Select category
                     </Button>
                 </Link>

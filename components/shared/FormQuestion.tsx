@@ -6,26 +6,14 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
     Form,
-    FormControl,
-    FormDescription,
     FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { useUser } from "@clerk/nextjs";
 import { createQuestion, updateQuestion, deleteQuestion } from "@/lib/actions/questions.actions"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { QUESTION_DIFFICULTIES, QUESTION_TYPES } from "@/lib/constants"
 import { WithId } from "mongodb"
 import {
@@ -39,7 +27,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
+import CustomFormItem from "./CustomFormItem"
 
 
 const formSchema = z.object({
@@ -81,7 +70,7 @@ type FormQuestionProps = {
 
 export default function FormQuestion({ categories, category, correct_answer, difficulty, image_url, incorrect_answers, question, type, selectedQuestionId, FormAction }: FormQuestionProps) {
     const { user } = useUser()
-    const router = useRouter()
+    // const router = useRouter()
 
     const defaultValues = {
         question: question,
@@ -115,12 +104,14 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                     if (questionCreated === "This question already exists") {
                         toast.warning("Question repeated", {
                             description: JSON.stringify(questionCreated),
-                            duration: 10000
+                            duration: 10000,
+                            className: "text-3xl"
                         })
                     } else {
                         toast.success("Success", {
                             description: JSON.stringify(questionCreated),
-                            duration: 10000
+                            duration: 10000,
+                            className: "text-3xl"
                         })
                         // form.reset(defaultValues)
                     }
@@ -128,7 +119,8 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                     console.log(error)
                     toast.error("Opps... something happened creating question! Please try again", {
                         description: JSON.stringify(error),
-                        duration: 10000
+                        duration: 10000,
+                        className: "text-3xl"
                     })
                 }
                 break;
@@ -142,26 +134,30 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                         if (questionUpdated) {
                             toast.success("Success", {
                                 description: JSON.stringify(questionUpdated),
-                                duration: 10000
+                                duration: 10000,
+                                className: "text-3xl"
                             })
                             // form.reset(defaultValues)
                         } else {
                             toast.warning("Question trouble", {
                                 description: JSON.stringify(questionUpdated),
-                                duration: 10000
+                                duration: 10000,
+                                className: "text-3xl"
                             })
                         }
                     } else {
                         toast.warning("Question trouble", {
                             description: JSON.stringify(["No changes were made"]),
-                            duration: 10000
+                            duration: 10000,
+                            className: "text-3xl"
                         })
                     }
                 } catch (error) {
                     console.log(error)
                     toast.error("Opps... something happened updating question! Please try again", {
                         description: JSON.stringify(error),
-                        duration: 10000
+                        duration: 10000,
+                        className: "text-3xl"
                     })
                 }
                 break;
@@ -173,20 +169,23 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                     if (questionDeleted) {
                         toast.success("Success", {
                             description: JSON.stringify(questionDeleted),
-                            duration: 10000
+                            duration: 10000,
+                            className: "text-3xl"
                         })
                         // form.reset(defaultValues)
                     } else {
                         toast.warning("Question warning", {
                             description: JSON.stringify(questionDeleted),
-                            duration: 10000
+                            duration: 10000,
+                            className: "text-3xl"
                         })
                     }
                 } catch (error) {
                     console.log(error)
                     toast.error("Opps... something happened deleting question! Please try again", {
                         description: JSON.stringify(error),
-                        duration: 10000
+                        duration: 10000,
+                        className: "text-3xl"
                     })
                 }
                 break;
@@ -198,15 +197,15 @@ export default function FormQuestion({ categories, category, correct_answer, dif
             <AlertDialog>
                 <div className="flex justify-center items-center w-full">
                     <AlertDialogTrigger asChild>
-                        <Button variant="outline" /* className="max-w-[800px]" */>Delete Question</Button>
+                        <Button variant="destructive" className="text-3xl p-10">Delete Question</Button>
                     </AlertDialogTrigger>
                 </div>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogTitle className="text-xl">Are you absolutely sure?</AlertDialogTitle>
                         <AlertDialogDescription className="flex flex-col justify-start items-start gap-5">
                             <p className="text-3xl">Question: <span className="font-bold">{question}</span></p>
-                            <p>This action cannot be undone. This will permanently delete your
+                            <p className="text-xl">This action cannot be undone. This will permanently delete your
                                 account and remove your data from our servers.</p>
                             {/* <code className="text-wrap">
                                 {JSON.stringify(form.getValues(), undefined, 2)}
@@ -231,45 +230,33 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                     control={form.control}
                     name="question"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Question</FormLabel>
-                            <FormControl>
-                                <Textarea placeholder="Type the question here..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public display name.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Question"
+                            description="This is your public display name."
+                            formControlChildren={<Textarea placeholder="Type the question here..." {...field} />}
+                        />
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="type"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Type of question</FormLabel>
-                            <Select onValueChange={(value) => {
-                                field.onChange(value)
-                                form.resetField('correct_answer')
-                                form.resetField('incorrect_answers')
-                            }} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a type" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {QUESTION_TYPES.map((difficulties: any) => (
-                                        <SelectItem key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                You can manage the question type here
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Type of question"
+                            description="You can manage the question type here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                onChange: (value) => {
+                                    field.onChange(value)
+                                    form.resetField('correct_answer')
+                                    form.resetField('incorrect_answers')
+                                },
+                                placeholder: "Select a type",
+                                defaultValue: field.value,
+                                options: QUESTION_TYPES.map(c => ({ name: c.name, key: c.value, value: c.value }))
+                            }}
+                        />
                     )}
                 />
                 {form.getValues().type === "multiple" &&
@@ -277,16 +264,12 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                         control={form.control}
                         name="correct_answer"
                         render={({ field }) => (
-                            <FormItem className="w-full max-w-[800px]">
-                                <FormLabel>Correct answer</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Type the correct answer here..." {...field} />
-                                </FormControl>
-                                <FormDescription>
-                                    This is your public display name.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
+                            <CustomFormItem
+                                label="Correct answer"
+                                description="You can manage the question type here"
+                                formControlChildren={<Input placeholder="Type the correct answer here..." {...field} />}
+                                fieldType="children"
+                            />
                         )}
                     />
                 }
@@ -295,40 +278,29 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                         control={form.control}
                         name="correct_answer"
                         render={({ field }) => (
-                            <FormItem className="w-full max-w-[800px]">
-                                <FormLabel>Correct answer</FormLabel>
-                                <FormControl>
-                                    <RadioGroup
-                                        onValueChange={(value) => {
-                                            field.onChange(value)
-                                            form.setValue("incorrect_answers", [`${!(value === "true")}`])
-                                        }}
-                                        defaultValue={field.value}
-                                        className="flex flex-col space-y-1"
-                                    >
-                                        <FormItem className="flex items-center space-x-3 space-y-0">
-                                            <FormControl>
-                                                <RadioGroupItem value="true" />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                True
-                                            </FormLabel>
-                                        </FormItem>
-                                        <FormItem className="flex items-center space-x-3 space-y-0">
-                                            <FormControl>
-                                                <RadioGroupItem value="false" />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                False
-                                            </FormLabel>
-                                        </FormItem>
-                                    </RadioGroup>
-                                </FormControl>
-                                <FormDescription>
-                                    This is your public display name.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
+                            <CustomFormItem
+                                label="Correct answer"
+                                description="You can manage the question type here"
+                                formControlChildren={null}
+                                fieldType="radio"
+                                radio={{
+                                    options: [{
+                                        key: 'true',
+                                        name: "True",
+                                        value: 'true'
+                                    },
+                                    {
+                                        key: 'false',
+                                        name: "False",
+                                        value: 'false'
+                                    }],
+                                    onValueChange: (value) => {
+                                        field.onChange(value)
+                                        form.setValue("incorrect_answers", [`${!(value === "true")}`])
+                                    },
+                                    defaultValue: field.value
+                                }}
+                            />
                         )}
                     />
                 }
@@ -337,22 +309,18 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                         control={form.control}
                         name="incorrect_answers"
                         render={({ field }) => (
-                            <FormItem className="w-full max-w-[800px]">
-                                <FormLabel>Incorrect answers</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Type 1st incorrect answer here..." {...field} value={form.getValues("incorrect_answers")[0]} onChange={(event) => form.setValue('incorrect_answers', [event.target.value, form.getValues("incorrect_answers")[1], form.getValues("incorrect_answers")[2]])} />
-                                </FormControl>
-                                <FormControl>
-                                    <Input placeholder="Type 2nd incorrect answer here..." {...field} value={form.getValues("incorrect_answers")[1]} onChange={(event) => form.setValue('incorrect_answers', [form.getValues("incorrect_answers")[0], event.target.value, form.getValues("incorrect_answers")[2]])} />
-                                </FormControl>
-                                <FormControl>
-                                    <Input placeholder="Type 3rd incorrect answer here..." {...field} value={form.getValues("incorrect_answers")[2]} onChange={(event) => form.setValue('incorrect_answers', [form.getValues("incorrect_answers")[0], form.getValues("incorrect_answers")[1], event.target.value])} />
-                                </FormControl>
-                                <FormDescription>
-                                    This is your public display name.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
+                            <CustomFormItem
+                                label="Incorrect answers"
+                                description="You can manage the question type here"
+                                formControlChildren={
+                                    <>
+                                        <Input className="text-3xl py-7" key={"incorrect_answers-0"} placeholder="Type 1st incorrect answer here..." {...field} value={form.getValues("incorrect_answers")[0]} onChange={(event) => form.setValue('incorrect_answers', [event.target.value, form.getValues("incorrect_answers")[1], form.getValues("incorrect_answers")[2]])} />
+                                        <Input className="text-3xl py-7" key={"incorrect_answers-1"} placeholder="Type 2nd incorrect answer here..." {...field} value={form.getValues("incorrect_answers")[1]} onChange={(event) => form.setValue('incorrect_answers', [form.getValues("incorrect_answers")[0], event.target.value, form.getValues("incorrect_answers")[2]])} />
+                                        <Input className="text-3xl py-7" key={"incorrect_answers-2"} placeholder="Type 3rd incorrect answer here..." {...field} value={form.getValues("incorrect_answers")[2]} onChange={(event) => form.setValue('incorrect_answers', [form.getValues("incorrect_answers")[0], form.getValues("incorrect_answers")[1], event.target.value])} />
+                                    </>
+                                }
+                                fieldType="children"
+                            />
                         )}
                     />}
 
@@ -360,70 +328,61 @@ export default function FormQuestion({ categories, category, correct_answer, dif
                     control={form.control}
                     name="category"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Category</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a type" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {categories?.map((category: any) => (
-                                        <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                You can manage the question type here
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Category"
+                            description="You can manage the question type here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: "Select a category",
+                                options: categories ? categories.map(c => ({
+                                    name: c.name,
+                                    value: c.name,
+                                    key: c.id.toString()
+                                })) : [],
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
+
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="difficulty"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Difficulty</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a difficulty" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {QUESTION_DIFFICULTIES.map((difficulties: any) => (
-                                        <SelectItem key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                You can manage the question type here
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Difficulty"
+                            description="You can manage the question type here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: "Select a difficulty",
+                                options: QUESTION_DIFFICULTIES.map(c => ({
+                                    name: c.name,
+                                    value: c.name,
+                                    key: c.value
+                                })),
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="image_url"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px]">
-                            <FormLabel>Image link (source)</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Type the image url..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public display name.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Image link (source)"
+                            description="This is your public display name."
+                            formControlChildren={<Input placeholder="Type the image url..." {...field} />}
+                            fieldType="children"
+                        />
                     )}
                 />
                 <div className="flex items-center justify-center gap-5">
-                    <Button type="submit">Submit</Button>
+                    <Button className="text-3xl py-7" type="submit">Submit</Button>
                     {/* <Button type="button" variant={"outline"} onClick={() => form.reset(defaultValues)}>Reset</Button> */}
                     {/* <Button type="button" variant={"outline"} onClick={() => router.refresh()}>Reset</Button> */}
                 </div>

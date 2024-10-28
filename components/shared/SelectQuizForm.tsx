@@ -5,20 +5,8 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {
     Form,
-    FormControl,
-    FormDescription,
     FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 
 import { QUESTION_DIFFICULTIES, QUESTION_TYPES } from "@/lib/constants"
@@ -27,6 +15,7 @@ import { Button } from "../ui/button"
 import { toast } from "sonner"
 import { useRouter } from 'next/navigation'
 import { WithId } from "mongodb"
+import CustomFormItem from "./CustomFormItem"
 
 
 const formSchema = z.object({
@@ -56,17 +45,9 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         toast.success("let's go", {
-            description: JSON.stringify(values)
+            description: JSON.stringify(values),
+            className: "text-3xl"
         })
-    }
-
-    console.log(form.getValues('category'))
-
-    const classes = {
-        title: "text-3xl",
-        field: "text-3xl py-7",
-        options: "text-3xl",
-        description: "text-xl"
     }
 
     return (
@@ -77,96 +58,78 @@ export default function SelectQuizForm({ api, categories }: SelectQuizFormProps)
                     control={form.control}
                     name="type"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px] space-y-6">
-                            <FormLabel className={`${classes.title}`}>Type of question</FormLabel>
-                            <Select onValueChange={(value) => {
-                                field.onChange(value)
-                            }} defaultValue={field.value}>
-                                <FormControl className={`${classes.field}`} >
-                                    <SelectTrigger >
-                                        <SelectValue placeholder="Select a type" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem className={`${classes.options}`} value={'all'}>All</SelectItem>
-                                    {QUESTION_TYPES.map((difficulties: any) => (
-                                        <SelectItem className={`${classes.options}`} key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription className={`${classes.description}`}>
-                                You can manage the question type here
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Type of question"
+                            description="You can manage the question type here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: `Select a type`,
+                                options: QUESTION_TYPES ? [{ name: 'All', key: 'all', value: 'all' }, ...QUESTION_TYPES.map(c => ({
+                                    name: c.name,
+                                    value: c.value,
+                                    key: c.value
+                                }))] : [],
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="numberOfQuestions"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px] space-y-6">
-                            <FormLabel className={`${classes.title}`}>How many question</FormLabel>
-                            <FormControl className={`${classes.field}`}>
-                                <Input type="number" min={1} max={20} placeholder="How many questions" {...field} /* onChange={(value) => field.onChange(parseInt(value.target.value) < 20 ? parseInt(value.target.value) : field.value)} */ />
-                            </FormControl>
-                            <FormDescription className={`${classes.description}`}>
-                                You can manage the number of questions
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="How many question"
+                            description="You can manage the number of questions"
+                            formControlChildren={<Input type="number" min={1} max={20} placeholder="How many questions" {...field} /* onChange={(value) => field.onChange(parseInt(value.target.value) < 20 ? parseInt(value.target.value) : field.value)} */ />}
+                            fieldType="select"
+                        />
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="category"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px] space-y-6">
-                            <FormLabel className={`${classes.title}`}>Category</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl className={`${classes.field}`}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a type" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem className={`${classes.options}`} value='all'>All</SelectItem>
-                                    {categories?.map((category) => (
-                                        <SelectItem className={`${classes.options}`} key={category.id} value={api === "native" ? category.name : category.id.toString()}>{category.id} - {category.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription className={`${classes.description}`}>
-                                You can manage the question category here
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Category"
+                            description="You can manage the question category here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: `Select category`,
+                                options: categories ? [{ name: 'All', key: 'all', value: 'all' }, ...categories.map(c => ({
+                                    name: `${c.id} - ${c.name}`,
+                                    value: api === "native" ? c.name : c.id.toString(),
+                                    key: c.id.toString()
+                                }))] : [],
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="difficulty"
                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[800px] space-y-6">
-                            <FormLabel className={`${classes.title}`}>Difficulty</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl className={`${classes.field}`} >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a difficulty" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem className={`${classes.options}`} value="all">All</SelectItem>
-                                    {QUESTION_DIFFICULTIES.map((difficulties: any) => (
-                                        <SelectItem className={`${classes.options}`} key={difficulties.value} value={difficulties.value}>{difficulties.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription className={`${classes.description}`}>
-                                You can manage the question difficulty here
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
+                        <CustomFormItem
+                            label="Difficulty"
+                            description=" You can manage the question difficulty here"
+                            formControlChildren={null}
+                            fieldType="select"
+                            select={{
+                                placeholder: `Select a difficulty`,
+                                options: [{ name: 'All', key: 'all', value: 'all' }, ...QUESTION_DIFFICULTIES.map(c => ({
+                                    name: `${c.name}`,
+                                    value: c.value,
+                                    key: c.value
+                                }))],
+                                defaultValue: field.value,
+                                onChange: field.onChange
+                            }}
+                        />
                     )}
                 />
 

@@ -60,6 +60,7 @@
 
 @layer utilities {
   /* ===== CLERK REWRITES */
+
   .cl-organizationSwitcher-root {
     @apply flex justify-center items-center bg-black;
   }
@@ -68,4 +69,13 @@
     .cl-organizationPreviewMainIdentifier__organizationSwitcher {
     @apply text-green-500;
   }
+}
+
+.cl-userButtonTrigger {
+  height: fit-content !important;
+}
+
+.cl-avatarBox {
+  width: 4rem;
+  height: 4rem;
 }

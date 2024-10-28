@@ -38,8 +38,6 @@ export default function Questions({ questions/* , checkAnswers */ }: QuestionsPr
         setAllQuestions(questionsWithAnswerSelected)
     }
 
-
-
     return (
         <section className="flex flex-col justify-center items-center gap-5">
             <div>
